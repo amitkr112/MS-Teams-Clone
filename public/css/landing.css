@@ -1,0 +1,28 @@
+*{
+  padding: 0px;
+  margin: 0px;
+  background-color: rgb(105, 32, 241);
+  
+}
+h1{
+  color: white;
+  font-size: 4rem;
+  text-align: center;
+  margin-top: 10rem;
+}
+h2{
+  color:white ;
+  text-align: center;
+  font-size: 3rem;
+}
+a{
+  text-decoration: none;
+  font-size: 2rem;
+  text-align: center;
+  margin: auto;
+}
+.anchor{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

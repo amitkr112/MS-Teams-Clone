@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <title>Teams Clone</title>
+    <link rel="stylesheet" href="css/newcall.css" />
+
+</head>
+
+<body>
+    <div class="top">
+        <h1>
+            Steps for operation<br />
+            Step 1 :Enter a room number<br />
+            Step 2 :Click on the join button<br />
+            Step 3 :Enjoy the call<br />
+        </h1>
+    </div>
+    <div class="container">
+        <h2>Enter a room id</h2>
+        <input class="form-input" type="text" id="roomName" value="" />
+        <button onclick="{window.location.href = '/join/' + document.getElementById('roomName').value}">
+            Join room
+        </button>
+    </div>
+</body>
+
+</html>
