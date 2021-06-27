@@ -1,0 +1,97 @@
+*{
+  padding: 0px;
+  margin: 0px;
+}
+.navbar{
+  background-color: black;
+  color: white;
+  height: 4vh;
+   text-align: center;
+  /*align-items: center;
+  justify-content: center; */
+}
+
+.middle{
+  height: 90vh;
+  /* background-color: rgb(83, 82, 82); */
+}
+
+
+.footer
+{
+  height: 5vh;
+  /* background-color: black; */
+}
+/* 
+#content{
+  height: 95vh;
+  display: flex;
+  flex-direction: row;
+} */
+
+#content {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 90vh;
+  background-color: rgb(49, 49, 49);
+  grid-template-columns: repeat(2, 50%);
+  align-items: center;
+}
+
+video {
+  width: 90%;
+  height: 90%;
+  /* object-fit: var(--video-object-fit);
+  border: 5px solid transparent; */
+  display: flex;
+  flex-direction: column;
+  object-fit: cover;
+  margin: 1rem;
+}
+video:fullscreen {
+  object-fit: contain;
+}
+
+/* #myVideo{
+  object-fit: cover;
+
+} */
+
+.one {
+  width: 100vw;
+  height: 90vh;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+.one video{
+  margin: auto;
+  padding: 2rem;
+}
+.two {
+  width: 50vw;
+  height: 90vh;
+  --video-object-fit: cover;
+  /* --video-object-fit: contain; */
+}
+.two video{
+  margin: 2rem auto;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.three {
+  width: 50vw;
+  height: 45vh;
+  --video-object-fit: cover;
+  margin: 0px auto;
+}
+
+
+.four {
+  width: 50vw;
+  height: 45vh;
+  --video-object-fit: cover;
+}
