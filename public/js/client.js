@@ -5,6 +5,8 @@ let footer = document.getElementsByClassName('footer')
 let content = document.getElementById('content')
 let audioButton = document.getElementById("audioButton")
 let videoButton = document.getElementById("videoButton")
+let leaveButton = document.getElementById("leaveButton")
+let moreButton = document.getElementById("moreButton")
 let template = document.getElementById("template")
 
 //Configuring the systems
@@ -32,6 +34,7 @@ let peerInfo = getPeerInfo();
 function connect() {
 
     console.log("Inside connect function")
+
     //I f the browser does not supports webrtc 
     if (!isWebRTCSupported) {
         console.log("The browser does not supports webRTC");
@@ -62,10 +65,13 @@ function connect() {
 
     socket.on("disconnect", function () {
         console.log("Disconnected from signaling server");
+        //Removing all peers videos
         for (let peer_id in peerMediaElements) {
             content.removeChild(peerMediaElements[peer_id].parentNode);
             resizeVideos();
         }
+
+
         for (let peer_id in peerConnections) {
             peerConnections[peer_id].close();
         }
@@ -79,13 +85,11 @@ function connect() {
         let peer_id = config.peer_id;
 
         if (peer_id in peerConnections) {
-            // If the user joins multiple channels where the other peer is also in.
             console.log("Already connected to peer", peer_id);
             return;
         }
 
         if (config.iceServers) iceServers = config.iceServers;
-        console.log("Iceservers", iceServers[0])
 
         peerConnection = new RTCPeerConnection({ iceServers: iceServers });
 
@@ -177,16 +181,18 @@ function connect() {
 
         let description = new RTCSessionDescription(remote_description);
 
+        //ON receiving the description the peer will set his/her remote description
+        // Thereafter the peer will create the answer to that description
+        // THta answer will be his local description
         peerConnections[peer_id].setRemoteDescription(description)
             .then(function () {
-                console.log("setRemoteDescription done!");
+                console.log("Setting Remote Description is done!");
                 if (remote_description.type == "offer") {
                     console.log("Creating answer");
                     peerConnections[peer_id].createAnswer()
                         .then(function (local_description) {
                             console.log("Answer description is: ", local_description);
-                            peerConnections[peer_id]
-                                .setLocalDescription(local_description)
+                            peerConnections[peer_id].setLocalDescription(local_description)
                                 .then(function () {
                                     socket.emit("relaySDP", {
                                         peer_id: peer_id,
@@ -195,20 +201,16 @@ function connect() {
                                     console.log("Answer setLocalDescription done!");
                                 })
                                 .catch((e) => {
-                                    console.error("[Error] answer setLocalDescription", e);
-                                    console(
-                                        "error",
-                                        "Answer setLocalDescription failed: " + e.message
-                                    );
+                                    console.log("Error occured in setting Local Description", e.message);
                                 });
                         })
                         .catch((e) => {
-                            console.error("[Error] creating answer", e);
+                            console.log("Error occured in creating answer", e.message);
                         });
-                } // end [if type offer]
+                }
             })
             .catch((e) => {
-                console.error("[Error] setRemoteDescription", e);
+                console.log("Error occured in setting Remote Description", e.message);
             });
     });
 
@@ -218,7 +220,7 @@ function connect() {
 
         peerConnections[peer_id].addIceCandidate(new RTCIceCandidate(ice_candidate))
             .catch((e) => {
-                console.error("[Error] addIceCandidate", e);
+                console.error("Error occured in adding Ice Candidate", e.message);
             });
     });
 
@@ -227,6 +229,8 @@ function connect() {
 
         let peer_id = config.peer_id;
 
+
+        //Removing the video element from it's peer's screen
         if (peer_id in peerMediaElements) {
             content.removeChild(peerMediaElements[peer_id].parentNode);
             resizeVideos();
@@ -262,7 +266,6 @@ function setupLocalMedia(callback, errorback) {
         audio: useAudio,
         video: useVideo,
     };
-
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function (stream) {
             console.log("Access granted to audio/video");
@@ -270,21 +273,21 @@ function setupLocalMedia(callback, errorback) {
             document.body.style.backgroundImage = "none";
 
             localMediaStream = stream;
-            const videoWrap = document.createElement("div");
+            const addVideo = document.createElement("div");
 
 
 
             const localMedia = document.createElement("video");
-            videoWrap.className = "video";
-            videoWrap.setAttribute("id", "myVideoWrap");
-            videoWrap.appendChild(localMedia);
+            addVideo.className = "video";
+            addVideo.setAttribute("id", "myAddVideo");
+            addVideo.appendChild(localMedia);
             localMedia.setAttribute("id", "myVideo");
             localMedia.setAttribute("playsinline", true);
             localMedia.autoplay = true;
             localMedia.muted = true;
             localMedia.volume = 0;
             localMedia.controls = false;
-            content.appendChild(videoWrap);
+            content.appendChild(addVideo);
 
             console.log("local-video-audio", {
                 video: localMediaStream.getVideoTracks()[0].label,
@@ -296,14 +299,10 @@ function setupLocalMedia(callback, errorback) {
             resizeVideos()
 
             setButtonsTitle();
-
-
             if (callback) callback();
         })
         .catch((err) => {
-
-            console.error("Access denied for audio/video", err);
-            if (errorback) errorback();
+            console.log(err.message)
         });
 }
 
@@ -342,7 +341,6 @@ function getPeerInfo() {
 }
 
 function attachMediaStream(element, stream) {
-    //console.log("DEPRECATED, attachMediaStream will soon be removed.");
     console.log("Success, media stream attached");
     element.srcObject = stream;
 }
@@ -370,6 +368,16 @@ function setButtonsTitle() {
         placement: "top",
     });
 
+    tippy(leaveButton, {
+        content: "Leave the call",
+        placement: "top"
+    })
+
+    tippy(moreButton, {
+        content: "More actions",
+        placement: "top"
+    })
+
 
 
 }
@@ -383,12 +391,64 @@ audioButton.addEventListener("click", (e) => {
 });
 
 
+
 function setMyAudioStatus(status) {
     if (!isMobileDevice) {
         tippy(audioButton, {
-            content: status ? "Turn OFF Audio" : "Turn ON Audio",
+            content: status ? "Turn Off Audio" : "Turn On Audio",
             placement: "top",
         });
+    }
+}
+
+videoButton.addEventListener("click", (e) => {
+    localMediaStream.getVideoTracks()[0].enabled = !localMediaStream.getVideoTracks()[0].enabled;
+    myVideoStatus = localMediaStream.getVideoTracks()[0].enabled;
+    e.target.className = "fas fa-video" + (myVideoStatus ? "" : "-slash");
+    setMyVideoStatus(myVideoStatus);
+});
+
+
+
+
+function setMyVideoStatus(status) {
+    if (!isMobileDevice) {
+        tippy(videoButton, {
+            content: status ? "Turn Off video " : "Turn On video",
+            placement: "top",
+        });
+    }
+}
+
+
+leaveButton.addEventListener("click", () => {
+    window.location.href = "/";
+});
+
+let name = "";
+while (name == "")
+    name = prompt("Enter your name", "Guest");
+console.log(name);
+document.getElementById("myName").innerText = name
+
+
+
+
+function myFunction() {
+    document.getElementById("dropup").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function (event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("drop-menu");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     }
 }
 

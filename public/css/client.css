@@ -2,13 +2,73 @@
   padding: 0px;
   margin: 0px;
 }
-.navbar{
+
+
+/* Add a black background color to the top navigation */
+.topnav {
+  position: relative;
+  background-color: black;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav h2 {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 5px 5px;
+  font-size: 16px;
+}
+
+
+/* Centered section inside the top navigation */
+.topnav-centered h2 {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Right-aligned section inside the top navigation */
+.topnav-right {
+  float: right;
+}
+
+/* Responsive navigation menu - display links on top of each other instead of next to each other (for mobile devices) */
+/* @media screen and (max-width: 600px) {
+  .topnav a, .topnav-right {
+    float: none;
+    display: block;
+  }
+
+  .topnav-centered a {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+} */
+
+
+#mid{
+  text-align: center;
   background-color: black;
   color: white;
-  height: 4vh;
-   text-align: center;
-  /*align-items: center;
-  justify-content: center; */
+  width: 90vw;
+}
+
+#right{
+  background-color: black;
+  color: white;
+  float: right;
+  display: inline;
+  width: 10vw;
+}
+
+
+.navbar h3{
+  text-align: right;
 }
 
 .middle{
@@ -94,4 +154,44 @@ video:fullscreen {
   width: 50vw;
   height: 45vh;
   --video-object-fit: cover;
+}
+
+
+
+
+.dropbtn{
+  color: white;
+}
+
+.drop-wrapper{
+  position: relative;
+}
+
+.drop-menu{
+  display: none;
+  position: absolute;
+  width: 100px;
+  background-color: white;
+  color: black;
+}
+
+
+.drop-menu button{
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+
+
+.dropup{
+  bottom: 100%;
+  
+}
+#moreButton{
+  font-size: 1.5rem;
+}
+
+
+.show{
+  display: block;
 }

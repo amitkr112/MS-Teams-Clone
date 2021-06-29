@@ -1,21 +1,29 @@
 //Suggested 
 "use strict";
 
-require("dotenv").config();
+//For routing
 const express = require("express");
+
+//Linking static files
 const path = require("path");
-const compression = require("compression");
+
+//Socket
 const socket = require("socket.io")
+
+//Creating our express app
 const app = express();
-app.use(compression());
-
-
 
 //Server Port
 var PORT = process.env.PORT || 5000;
-var channels = {}; // collect channels
-var sockets = {}; // collect sockets
-var peers = {}; // collect peers info grp by channels
+
+// collect channels
+var channels = {};
+
+// collect sockets
+var sockets = {};
+
+// collect peers info grp by channels
+var peers = {};
 
 
 const server = app.listen(PORT, () => {
@@ -23,28 +31,23 @@ const server = app.listen(PORT, () => {
 })
 
 const io = socket(server)
-var iceServers = [{ urls: "stun:stun.l.google.com:19302" }];
 
+//STUN server
+var iceServers = [{ urls: "stun:stun.l.google.com:19302" }];
 
 // Use all static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
 
 
-// Api parse body data as json
-app.use(express.json());
-
-// all start from here
+// Main page of browser
 app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "public/landing.html"))
+  res.sendFile(path.join(__dirname, "public/homepage.html"))
 );
 
-// set new room name and join
+// Page for creating a new room 
 app.get("/newcall", (req, res) =>
   res.sendFile(path.join(__dirname, "public/newcall.html"))
 );
-
-
-
 
 // no room name specified to join
 app.get("/join/", function (req, res) {
@@ -64,75 +67,88 @@ app.get("/join/:id", function (req, res) {
 io.on("connect", (socket) => {
 
   // console.log("Socket", socket)
-  // console.log("Connection started", socket.id)
+  console.log("Connection started", socket.id)
   socket.channels = {};
   sockets[socket.id] = socket;
+
+  // console.log("Socket", socket)
+  // console.log("Sockets", sockets)
+  // console.log("Socket.channels", socket.channels)
 
 
 
   //On peer join
-  socket.on("join", (config) => {
+  socket.on("join", (data) => {
     console.log("Inside join function");
-    console.log("Join " + socket.id);
+    // console.log("Join " + socket.id);
 
-    var channel = config.channel;
-    var peer_name = config.peerName;
-    var peer_video = config.peerVideo;
-    var peer_audio = config.peerAudio;
-    var peer_hand = config.peerHand;
+    // Channel/Room name
+    var channel = data.channel;
+    var peer_name = data.peerName;
+
+    //Channel/Room Name
+    console.log("channel" + channel)
 
     if (channel in socket.channels) {
-      console.log("[" + socket.id + "] [Warning] already joined", channel);
+      console.log(socket.id + " already joined");
       return;
     }
-    // no channel aka room in channels init
+    // No channel in channels create a channel
     if (!(channel in channels)) {
+      console.log("No channel in channels init", channel)
       channels[channel] = {};
     }
 
-    // no channel aka room in peers init
+    // If channel contain no peers create a channel
     if (!(channel in peers)) {
+      console.log("No rooms in peers initially", channel)
       peers[channel] = {};
     }
 
-    // collect peers info grp by channels
+    // Collecting all peers info channelwise
     peers[channel][socket.id] = {
+      //Initailizing the peer information
       peer_name: peer_name,
-      peer_video: peer_video,
-      peer_audio: peer_audio,
-      peer_hand: peer_hand,
     };
-    // console.log("connected peers grp by roomId", peers);
 
+    console.log("Peers present in all room ids", peers);
+
+    // When multiple users join a channel
     for (var id in channels[channel]) {
-      // offer false
-      channels[channel][id].emit("addPeer", {
-        peer_id: socket.id,
-        peers: peers[channel],
-        should_create_offer: false,
-        iceServers: iceServers,
-      });
-      // offer true
+      //This socket will create offer to these ids
+      console.log("ID ", id)
       socket.emit("addPeer", {
         peer_id: id,
         peers: peers[channel],
         should_create_offer: true,
         iceServers: iceServers,
       });
-      console.log(socket.id + "emit add Peer " + id);
+
+      //Others will accept/answer the offer
+      channels[channel][id].emit("addPeer", {
+        peer_id: socket.id,
+        peers: peers[channel],
+        should_create_offer: false,
+        iceServers: iceServers,
+      });
     }
+
+
 
     channels[channel][socket.id] = socket;
     socket.channels[channel] = channel;
+    console.log("Channels ", socket.channels)
+    // console.log("channels[channel] ", channels[channel])
   });
 
-  // Relay ICE to peers
-  socket.on("relayICE", (config) => {
+  // Relaying  ICE to peers in order to send the network information 
+  socket.on("relayICE", (data) => {
     console.log("Inside relayIce function");
-    let peer_id = config.peer_id;
-    let ice_candidate = config.ice_candidate;
+    let peer_id = data.peer_id;
+    let ice_candidate = data.ice_candidate;
 
     if (peer_id in sockets) {
+      console.log("id ", peer_id)
       sockets[peer_id].emit("iceCandidate", {
         peer_id: socket.id,
         ice_candidate: ice_candidate,
@@ -140,14 +156,15 @@ io.on("connect", (socket) => {
     }
   });
 
-  // Relay SDP to peers
-  socket.on("relaySDP", (config) => {
+  // Relaying  SDP to peers conatining MetaData
+  socket.on("relaySDP", (data) => {
     console.log("Inside relay Sdp function");
-    let peer_id = config.peer_id;
-    let session_description = config.session_description;
+    let peer_id = data.peer_id;
+    let session_description = data.session_description;
 
 
     if (peer_id in sockets) {
+      console.log(peer_id)
       sockets[peer_id].emit("sessionDescription", {
         peer_id: socket.id,
         session_description: session_description,
@@ -160,6 +177,7 @@ io.on("connect", (socket) => {
   socket.on("disconnect", () => {
     console.log("Inside disconnect function");
     console.log(socket.channels)
+    //The channel/room in which this id is present
     for (var channel in socket.channels) {
       removePeerFrom(channel);
     }
@@ -169,8 +187,9 @@ io.on("connect", (socket) => {
 
   // Remove peers from channel/room
   async function removePeerFrom(channel) {
+    //Handing warnings
     if (!(channel in socket.channels)) {
-      console.log(socket.id + "Warning not in ", channel);
+      console.log(socket.id + "is not in ", channel);
       return;
     }
 
@@ -184,12 +203,14 @@ io.on("connect", (socket) => {
     }
 
     for (var id in channels[channel]) {
+      //Removing this id from other channel's screen
       await channels[channel][id].emit("removePeer", { peer_id: socket.id });
+
+      //Removing the other clients from this channel
       await socket.emit("removePeer", { peer_id: id });
       console.log(socket.id + " emit remove Peer " + id);
     }
   }
-
 
 });
 
