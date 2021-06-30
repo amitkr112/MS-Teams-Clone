@@ -157,7 +157,7 @@ video:fullscreen {
 }
 
 
-
+/*Dropdown button*/
 
 .dropbtn{
   color: white;
@@ -170,15 +170,16 @@ video:fullscreen {
 .drop-menu{
   display: none;
   position: absolute;
-  width: 100px;
-  background-color: white;
-  color: black;
+  width: 200px;
+  background-color: black;
+  color: white;
 }
 
 
 .drop-menu button{
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: bold;
+  color: white;
 }
 
 
@@ -194,4 +195,12 @@ video:fullscreen {
 
 .show{
   display: block;
+}
+
+/*----------*/
+
+
+
+#showButton:hover{
+  color: green;
 }

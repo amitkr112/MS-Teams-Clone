@@ -8,6 +8,8 @@ let videoButton = document.getElementById("videoButton")
 let leaveButton = document.getElementById("leaveButton")
 let moreButton = document.getElementById("moreButton")
 let template = document.getElementById("template")
+let showButton = document.getElementById("showButton")
+let messageButton = document.getElementById("messageButton")
 
 //Configuring the systems
 const isWebRTCSupported = DetectRTC.isWebRTCSupported;
@@ -29,6 +31,7 @@ let iceServers = [{ urls: "stun:stun.l.google.com:19302" }];
 let myVideo;
 let roomId = getRoomId();
 let peerInfo = getPeerInfo();
+let peers;
 
 
 function connect() {
@@ -83,6 +86,7 @@ function connect() {
         // console.log("addPeer", JSON.stringify(config));
 
         let peer_id = config.peer_id;
+        peers = config.peers
 
         if (peer_id in peerConnections) {
             console.log("Already connected to peer", peer_id);
@@ -242,7 +246,10 @@ function connect() {
         delete peerConnections[peer_id];
         delete peerMediaElements[peer_id];
 
+
     });
+
+
 
 
 }
@@ -424,6 +431,34 @@ function setMyVideoStatus(status) {
 leaveButton.addEventListener("click", () => {
     window.location.href = "/";
 });
+
+
+
+showButton.addEventListener("click", () => {
+    console.log("peerconnections", peerConnections)
+
+    console.log("peers ", peers)
+    for (peer in peers)
+        console.log(peer)
+
+    console.log("Button Clicked")
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let name = "";
 while (name == "")
