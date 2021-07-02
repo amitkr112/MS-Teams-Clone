@@ -172,6 +172,9 @@ io.on("connect", (socket) => {
     }
   });
 
+  socket.on("chat", (config) => {
+    socket.broadcast.to(config.room_id).emit('msg', config);
+  });
 
   // On peer diconnected
   socket.on("disconnect", () => {

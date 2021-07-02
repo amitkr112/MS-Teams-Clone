@@ -204,3 +204,69 @@ video:fullscreen {
 #showButton:hover{
   color: green;
 }
+
+/*--------*/
+
+#messageButton:hover{
+  color: green;
+
+}
+/*----------*/
+
+#copyButton:hover{
+  color: green;
+}
+
+
+/*In order to make the msg box on front of screen*/
+
+:root {
+  --msger-top: 50%;
+  --msger-left: 50%;
+  --msger-height: 450px;
+  --msger-width: 200px;
+}
+
+
+
+.msg {
+  color: green;
+  z-index: 10;
+  position: absolute;
+  /* center screen */
+  top: var(--msger-top);
+  left: var(--msger-left);
+  transform: translate(-50%, -50%);
+  height: var(--msger-height);
+  width: var(--msger-width);
+  
+  border:2px solid white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  display: none;
+}
+.msg-header{
+  height: 25px;
+  background-color: orange;
+
+}
+.msg-content{
+  height: 375px;
+  background-color: white;
+  overflow: auto;
+
+}
+.msg-footer{
+  height: 50px;
+  background-color: green;
+
+}
+
+#sendButton{
+  background-color: white;
+}
+
+#sendMessage{
+  padding: 2px;
+}
