@@ -17,10 +17,7 @@ let sendButton = document.getElementById("sendButton")
 let msgContent = document.getElementById("msg-content")
 
 
-
-//Configuring the systems
-const isWebRTCSupported = DetectRTC.isWebRTCSupported;
-const isMobileDevice = DetectRTC.isMobileDevice;
+let isMobileDevice = DetectRTC.isMobileDevice
 
 
 //Function and other variables
@@ -41,10 +38,7 @@ let peers;
 
 console.log("Inside connect function")
 
-//I f the browser does not supports webrtc 
-if (!isWebRTCSupported) {
-    console.log("The browser does not supports webRTC");
-}
+
 
 socket = io(server)
 
@@ -155,7 +149,8 @@ socket.on("addPeer", function (config) {
 
 socket.on("msg", function (data) {
     console.log("reveived values", data)
-    msgContent.innerHTML += '<p><strong>' + data.name + ':</strong>' + data.msg + '</p>'
+    append(`${data.name}:${data.msg}`, 'left')
+    // msgContent.innerHTML += '<p><strong>' + data.name + ':</strong>' + data.msg + '</p>'
 })
 
 socket.on("sessionDescription", function (config) {
@@ -393,6 +388,7 @@ function setMyAudioStatus(status) {
         });
     }
 }
+
 /*---------------------------------------------*/
 
 
@@ -600,21 +596,34 @@ messageButton.addEventListener("click", () => {
     }
 
 })
+
 sendButton.addEventListener("click", () => {
-    console.log("send to the server" + sendMessage.value + name + roomId)
-    // console.log(peerConnections)
-    console.log(roomId)
-    console.log(name)
-    msgContent.innerHTML += '<p><strong>' + name + ':</strong>' + sendMessage.value + '</p>'
-    socket.emit("chat", {
-        peerConnections: peerConnections,
-        room_id: roomId,
-        name: name,
-        msg: sendMessage.value
-    });
-    sendMessage.value = ""
+    if (sendMessage.value != "") {
+
+        console.log("send to the server" + sendMessage.value + name + roomId)
+        // console.log(peerConnections)
+        console.log(roomId)
+        console.log(name)
+        // msgContent.innerHTML += '<p><strong>' + name + ':</strong>' + sendMessage.value + '</p>'
+        append(`You:${sendMessage.value}`, 'right')
+        socket.emit("chat", {
+            peerConnections: peerConnections,
+            room_id: roomId,
+            name: name,
+            msg: sendMessage.value
+        });
+        sendMessage.value = ""
+    }
 
 })
+
+function append(message, position) {
+    const messagelement = document.createElement('div');
+    messagelement.innerText = message;
+    messagelement.classList.add('message');
+    messagelement.classList.add(position);
+    msgContent.append(messagelement);
+}
 
 
 

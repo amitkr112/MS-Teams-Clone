@@ -173,7 +173,19 @@ io.on("connect", (socket) => {
   });
 
   socket.on("chat", (config) => {
-    socket.broadcast.to(config.room_id).emit('msg', config);
+    let peerConnections = config.peerConnections;
+    let name = config.name;
+    let msg = config.msg;
+
+    for (var peer_id in peerConnections) {
+      if (sockets[peer_id]) {
+        sockets[peer_id].emit("msg", {
+          peer_id: socket.id,
+          name: name,
+          msg: msg,
+        });
+      }
+    }
   });
 
   // On peer diconnected

@@ -35,21 +35,6 @@
   float: right;
 }
 
-/* Responsive navigation menu - display links on top of each other instead of next to each other (for mobile devices) */
-/* @media screen and (max-width: 600px) {
-  .topnav a, .topnav-right {
-    float: none;
-    display: block;
-  }
-
-  .topnav-centered a {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
-  }
-} */
-
 
 #mid{
   text-align: center;
@@ -89,6 +74,8 @@
   flex-direction: row;
 } */
 
+/*-----------------video-------------------*/
+
 #content {
   display: grid;
   justify-content: center;
@@ -115,7 +102,6 @@ video:fullscreen {
 
 /* #myVideo{
   object-fit: cover;
-
 } */
 
 .one {
@@ -123,11 +109,12 @@ video:fullscreen {
   height: 90vh;
   align-items: center;
   justify-content: center;
+  --video-object-fit: cover;
   margin: auto;
 }
 .one video{
-  margin: auto;
-  padding: 2rem;
+  margin: 1rem auto;
+  padding-top: 1rem;
 }
 .two {
   width: 50vw;
@@ -142,11 +129,25 @@ video:fullscreen {
   
 }
 
+.three video{
+  margin: 1rem auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.four video{
+  margin: 1rem auto;
+  justify-content: center;
+  align-items: center;
+}
+
 .three {
   width: 50vw;
   height: 45vh;
   --video-object-fit: cover;
   margin: 0px auto;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -154,10 +155,11 @@ video:fullscreen {
   width: 50vw;
   height: 45vh;
   --video-object-fit: cover;
+  justify-content: center;
+  align-items: center;
 }
 
-
-/*Dropdown button*/
+/*-------Dropdown button-------------*/
 
 .dropbtn{
   color: white;
@@ -170,7 +172,7 @@ video:fullscreen {
 .drop-menu{
   display: none;
   position: absolute;
-  width: 200px;
+  width: 160px;
   background-color: black;
   color: white;
 }
@@ -217,20 +219,20 @@ video:fullscreen {
   color: green;
 }
 
-
+/*------------------Message---------------*/
 /*In order to make the msg box on front of screen*/
 
 :root {
   --msger-top: 50%;
   --msger-left: 50%;
-  --msger-height: 450px;
-  --msger-width: 200px;
+  --msger-height: 436px;
+  --msger-width: 240px;
 }
 
 
 
 .msg {
-  color: green;
+  
   z-index: 10;
   position: absolute;
   /* center screen */
@@ -248,25 +250,73 @@ video:fullscreen {
 }
 .msg-header{
   height: 25px;
-  background-color: orange;
+  background-color: black;
 
 }
 .msg-content{
   height: 375px;
-  background-color: white;
+  background-color: grey;
   overflow: auto;
+  color: white;
+  text-align: center;
 
 }
 .msg-footer{
-  height: 50px;
-  background-color: green;
+  height: 36px;
+  background-color: black;
 
 }
 
 #sendButton{
   background-color: white;
+  padding: 4px 8px;
+  float: right;
+  margin: 5px;
+  border-radius: 1px ;
+  font-weight: bold;
+  
 }
 
 #sendMessage{
-  padding: 2px;
+  padding: 3px 6px;
+  margin-right: 5px;
+  margin: 5px 0px 0px 5px;
+  outline: none;
+
+  
+}
+
+#closeChat{
+  background-color: white;
+  margin: 0px auto;
+  padding: 5px 102px;
+  font-weight: bold;
+}
+
+
+.message{
+  background-color: rgb(211, 204, 204);
+  width: 70%;
+  padding: 7px;
+  margin: 5px 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+  color: black;
+}
+.left{
+  float: left;
+  clear:both;
+  word-break: break-all;
+  word-wrap: wrap;
+  text-align: left;
+  
+}
+
+.right{
+  float: right;
+  clear:both;
+  background-color: greenyellow;
+  word-break: break-all;
+  word-wrap: wrap;
+  text-align: left;
 }
