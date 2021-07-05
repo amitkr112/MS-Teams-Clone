@@ -89,8 +89,6 @@
 video {
   width: 90%;
   height: 90%;
-  /* object-fit: var(--video-object-fit);
-  border: 5px solid transparent; */
   display: flex;
   flex-direction: column;
   object-fit: cover;
@@ -100,9 +98,6 @@ video:fullscreen {
   object-fit: contain;
 }
 
-/* #myVideo{
-  object-fit: cover;
-} */
 
 .one {
   width: 100vw;
@@ -159,6 +154,18 @@ video:fullscreen {
   align-items: center;
 }
 
+
+@media only screen and (max-width: 720px) {
+  .two {
+    width: 50vw;
+    height: 45vh;
+    display: block;
+  }
+  .two video{
+    display: block;
+  }
+
+}
 /*-------Dropdown button-------------*/
 
 .dropbtn{

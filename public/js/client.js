@@ -25,8 +25,6 @@ let socket
 let serverPort = 5000;
 let server = getServerUrl();
 let localMediaStream
-let useAudio = true;
-let useVideo = true;
 let remoteMediaControls = false;
 let peerConnections = {};
 let useRTCDataChannel = true;
@@ -36,7 +34,6 @@ let myVideo;
 let roomId = location.pathname.substring(6); //----Skipping/join/----// 
 let peers;
 
-console.log("Inside connect function")
 
 
 
@@ -44,6 +41,8 @@ socket = io(server)
 
 socket.on("connect", () => {
     console.log("Connected to signaling server");
+
+    // First add the mediastream and then join to the channel
     if (localMediaStream) joinToChannel();
     else {
         setupLocalMedia(function () {
@@ -53,7 +52,6 @@ socket.on("connect", () => {
 })
 
 socket.on("addPeer", function (config) {
-    // console.log("addPeer", JSON.stringify(config));
 
     let peer_id = config.peer_id;
     peers = config.peers
@@ -67,6 +65,7 @@ socket.on("addPeer", function (config) {
 
     peerConnection = new RTCPeerConnection({ iceServers: iceServers });
 
+    // Adding the peer to the peerconnections
     peerConnections[peer_id] = peerConnection;
 
 
@@ -122,6 +121,8 @@ socket.on("addPeer", function (config) {
 
     if (config.should_create_offer) {
         console.log("Creating RTC offer to", peer_id);
+        console.log(peerConnections)
+        console.log("PEER CONNECTIONS", peerConnections[peer_id])
         peerConnections[peer_id].createOffer()
             .then(function (local_description) {
                 console.log("Local offer description is", local_description);
@@ -134,23 +135,20 @@ socket.on("addPeer", function (config) {
                         console.log("Offer setLocalDescription done!");
                     })
                     .catch((e) => {
-                        console.error("[Error] offer setLocalDescription", e);
-                        console.log(
-                            "error",
-                            "Offer setLocalDescription failed: " + e.message
-                        );
+                        console.log("Error occured in setting Local Description " + e.message);
                     });
             })
             .catch((e) => {
-                console.error("[Error] sending offer", e);
+                console.log("Error occured in sending offer", e.message);
             });
     }
 });
 
 socket.on("msg", function (data) {
     console.log("reveived values", data)
+    // Appending the message to the left side in content section
     append(`${data.name}:${data.msg}`, 'left')
-    // msgContent.innerHTML += '<p><strong>' + data.name + ':</strong>' + data.msg + '</p>'
+
 })
 
 socket.on("sessionDescription", function (config) {
@@ -195,6 +193,7 @@ socket.on("sessionDescription", function (config) {
 });
 
 socket.on("iceCandidate", function (config) {
+    console.log("Inside ice candidate")
     let peer_id = config.peer_id;
     let ice_candidate = config.ice_candidate;
 
@@ -207,6 +206,7 @@ socket.on("iceCandidate", function (config) {
 
 socket.on("disconnect", function () {
     console.log("Disconnected from signaling server");
+
     //Removing all peers videos
     for (let peer_id in peerMediaElements) {
         content.removeChild(peerMediaElements[peer_id].parentNode);
@@ -260,32 +260,23 @@ function joinToChannel() {
 }
 
 //Setting up local-media
-function setupLocalMedia(callback, errorback) {
-    // if we've already been initialized do nothing
-    if (localMediaStream != null) {
-        if (callback) callback();
-        return;
-    }
+function setupLocalMedia(callback) {
     console.log("Requesting audio and video access");
-
     const constraints = {
-        audio: useAudio,
-        video: useVideo,
+        audio: true,
+        video: true,
     };
     navigator.mediaDevices.getUserMedia(constraints)
         .then(function (stream) {
-            console.log("Access granted to audio/video");
-            // hide img bg and loading div
-            document.body.style.backgroundImage = "none";
-
+            console.log("Access audio/video");
             localMediaStream = stream;
+
             const addVideo = document.createElement("div");
 
 
 
             const localMedia = document.createElement("video");
             addVideo.className = "video";
-            addVideo.setAttribute("id", "myAddVideo");
             addVideo.appendChild(localMedia);
             localMedia.setAttribute("id", "myVideo");
             localMedia.setAttribute("playsinline", true);
@@ -293,8 +284,11 @@ function setupLocalMedia(callback, errorback) {
             localMedia.muted = true;
             localMedia.volume = 0;
             localMedia.controls = false;
+
+            //Appending myvideo to the browser
             content.appendChild(addVideo);
 
+            //Tracking aduio and video
             console.log("local-video-audio", {
                 video: localMediaStream.getVideoTracks()[0].label,
                 audio: localMediaStream.getAudioTracks()[0].label,
@@ -302,6 +296,8 @@ function setupLocalMedia(callback, errorback) {
 
             // attachMediaStream is a part of the adapter.js library
             attachMediaStream(localMedia, localMediaStream);
+
+            // Rendering the UI while loading
             resizeVideos()
 
             setButtonsTitle();
@@ -324,12 +320,13 @@ function getServerUrl() {
 }
 
 
-
+//Attaching the media stream
 function attachMediaStream(element, stream) {
     console.log("Success, media stream attached");
     element.srcObject = stream;
 }
 
+//Whenever any peer leaves/joins there must be resizing of videos
 function resizeVideos() {
     const numToString = ["", "one", "two", "three", "four"];
     const videos = document.querySelectorAll(".video");
@@ -338,9 +335,11 @@ function resizeVideos() {
     });
 }
 
+//Displaying the information about buttons upon hovering
 function setButtonsTitle() {
 
-    // Not need for mobile
+    // OnHover will not work for mobile
+    // Hence not need for mobile
     if (isMobileDevice) return;
 
 
@@ -372,15 +371,20 @@ function setButtonsTitle() {
 /*--------- Audio Button---------------- */
 
 audioButton.addEventListener("click", (e) => {
+    //Just Reverse the situation
     localMediaStream.getAudioTracks()[0].enabled = !localMediaStream.getAudioTracks()[0].enabled;
-    myAudioStatus = localMediaStream.getAudioTracks()[0].enabled;
-    e.target.className = "fas fa-microphone" + (myAudioStatus ? "" : "-slash");
-    setMyAudioStatus(myAudioStatus);
+    audioStatus = localMediaStream.getAudioTracks()[0].enabled;
+    if (audioStatus)
+        e.target.className = "fas fa-microphone"
+    else
+        e.target.className = "fas fa-microphone-slash";
+    setAudioStatus(audioStatus);
 });
 
 
 
-function setMyAudioStatus(status) {
+function setAudioStatus(status) {
+    //Onhover will not work in mobile devices
     if (!isMobileDevice) {
         tippy(audioButton, {
             content: status ? "Turn Off Audio" : "Turn On Audio",
@@ -398,13 +402,16 @@ function setMyAudioStatus(status) {
 
 videoButton.addEventListener("click", (e) => {
     localMediaStream.getVideoTracks()[0].enabled = !localMediaStream.getVideoTracks()[0].enabled;
-    myVideoStatus = localMediaStream.getVideoTracks()[0].enabled;
-    e.target.className = "fas fa-video" + (myVideoStatus ? "" : "-slash");
-    setMyVideoStatus(myVideoStatus);
+    videoStatus = localMediaStream.getVideoTracks()[0].enabled;
+    if (videoStatus)
+        e.target.className = "fas fa-video"
+    else
+        e.target.className = "fas fa-video-slash";
+    setVideoStatus(videoStatus);
 });
 
 
-function setMyVideoStatus(status) {
+function setVideoStatus(status) {
     if (!isMobileDevice) {
         tippy(videoButton, {
             content: status ? "Turn Off video " : "Turn On video",
@@ -574,9 +581,10 @@ copyButton.addEventListener("click", () => {
     inputc.parentNode.removeChild(inputc);
     Swal.fire("URL Copied.");
 })
-/*--------------------------------------------*/
+/*---------------------------------------------*/
 
 
+/*------------Messaging Functioanlity---------*/
 
 
 closeChat.addEventListener("click", () => {
@@ -626,10 +634,7 @@ function append(message, position) {
 }
 
 
-
-
-
-/*--------------------------------------*/
+/*-----------------------------------------*/
 
 // emailButton.addEventListener("click", () => {
 
@@ -659,7 +664,7 @@ document.getElementById("myName").innerText = name
 
 
 
-/*-------------------Creating Dropup----------*/
+/*--------------Creating Dropup-------------*/
 
 function myFunction() {
     document.getElementById("dropup").classList.toggle("show");

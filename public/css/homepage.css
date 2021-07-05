@@ -20,6 +20,8 @@ a{
   font-size: 2rem;
   text-align: center;
   margin: auto;
+  border: 0;
+  background: white
 }
 .anchor{
   justify-content: center;

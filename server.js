@@ -93,6 +93,7 @@ io.on("connect", (socket) => {
       console.log(socket.id + " already joined");
       return;
     }
+
     // No channel in channels create a channel
     if (!(channel in channels)) {
       console.log("No channel in channels init", channel)
