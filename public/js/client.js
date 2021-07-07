@@ -15,14 +15,16 @@ let closeChat = document.getElementById("closeChat")
 let msg = document.getElementById("msg")
 let sendButton = document.getElementById("sendButton")
 let msgContent = document.getElementById("msg-content")
-
+let myName = document.getElementById("myName")
+let myEmail
+let name
 
 let isMobileDevice = DetectRTC.isMobileDevice
 
 
 //Function and other variables
 let socket
-let serverPort = 5000;
+let serverPort = 3000;
 let server = getServerUrl();
 let localMediaStream
 let remoteMediaControls = false;
@@ -426,7 +428,7 @@ function setVideoStatus(status) {
 
 /*-------------Leave Button--------------------*/
 leaveButton.addEventListener("click", () => {
-    window.location.href = "/";
+    window.location.href = '/';
 });
 
 /*---------------------------------------------*/
@@ -574,7 +576,7 @@ showButton.addEventListener("click", () => {
 /*--------------Copy Class Link----------------*/
 copyButton.addEventListener("click", () => {
     var inputc = document.body.appendChild(document.createElement("input"));
-    inputc.value = window.location.href;
+    inputc.value = window.location.href + "/msg";
     inputc.focus();
     inputc.select();
     document.execCommand('copy');
@@ -608,17 +610,18 @@ messageButton.addEventListener("click", () => {
 sendButton.addEventListener("click", () => {
     if (sendMessage.value != "") {
 
-        console.log("send to the server" + sendMessage.value + name + roomId)
+        // console.log("send to the server" + sendMessage.value + name + roomId)
         // console.log(peerConnections)
         console.log(roomId)
-        console.log(name)
+        // console.log(name)
         // msgContent.innerHTML += '<p><strong>' + name + ':</strong>' + sendMessage.value + '</p>'
         append(`You:${sendMessage.value}`, 'right')
         socket.emit("chat", {
             peerConnections: peerConnections,
-            room_id: roomId,
-            name: name,
-            msg: sendMessage.value
+            room: roomId,
+            name: myName.innerText,
+            msg: sendMessage.value,
+            email: myEmail
         });
         sendMessage.value = ""
     }
@@ -653,12 +656,11 @@ function append(message, position) {
 
 /*---------Getting the name of person-------*/
 
-let name = "";
-while (name == "")
-    name = prompt("Enter your name", "Guest");
-console.log(name);
-document.getElementById("myName").innerText = name
-
+console.log("myname is ", localStorage.getItem("myName"));
+console.log("myname is ", localStorage.getItem("myEmail"));
+myName.innerText = localStorage.getItem("myName")
+myEmail = localStorage.getItem("myEmail")
+name = myName.innerText
 /*------------------------------------------*/
 
 

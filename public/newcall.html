@@ -2,7 +2,7 @@
 <html lang="en" class="no-js">
 
 <head>
-    <title>Teams Clone</title>
+    <title>Microsoft Teams Clone</title>
     <link rel="stylesheet" href="css/newcall.css" />
 
 </head>
@@ -16,13 +16,33 @@
             Step 3 :Enjoy the call<br />
         </h1>
     </div>
-    <div class="container">
+    <!-- <div class="container">
         <h2>Enter a room id</h2>
         <input class="form-input" type="text" id="roomName" value="" />
-        <button onclick="{window.location.href = '/join/' + document.getElementById('roomName').value}">
+        <button onclick="window.open(`/join/${document.getElementById('roomName').value}`)">
             Join room
         </button>
+    </div> -->
+    <div class=" container">
+        <h2>Enter a room id</h2>
+        <input class="form-input" type="text" id="roomName" value="" />
+        <button onclick="join()">
+            Join Room
+        </button>
     </div>
+    <script>
+        function join() {
+            let room = document.getElementById('roomName').value
+            if (room == '') {
+                alert("Enter a non empty roomid")
+            }
+            else
+                window.open(`/join/${document.getElementById('roomName').value}/msg`)
+
+        }
+    </script>
+    <script src="/js/message.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16"></script>
 </body>
 
 </html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Teams Clone</title>
+    <link rel="stylesheet" href="/css/message.css">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id"
+        content="539197489597-7vb4oe7neieca9fc69hbnk033h8jrdgr.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<body>
+    <div class="topnav">
+
+        <!-- Centered link -->
+        <div class="topnav-centered">
+            <h2>Microsoft Teams Clone</h2>
+        </div>
+
+
+        <!-- Right-aligned links -->
+        <div class="topnav-right">
+            <div id="signIn" class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+            <div className="dropdown">
+                <h2 id="myName"><i className="fa fa-caret-down"></i></h2>
+                <ul className="dropdown-content">
+                    <li>
+                        <button id="signOut">SignOut</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="msg" id="msg">
+        <div class="msg-header">
+            <button id="joinCall">Join Call</button>
+            <button id="leaveCall">Leave Room</button>
+        </div>
+        <div class="msgs-content" id="msgs-content">
+            <h1>Messages</h1>
+
+        </div>
+        <div class="msg-footer">
+            <input type="text" id="sendMessage" placeholder="Enter the msg to send">
+            <button id="sendMsgButton">Send</button>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16"></script>
+    <script src="/js/message.js"></script>
+</body>
+
+</html>

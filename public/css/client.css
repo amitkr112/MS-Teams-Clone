@@ -166,6 +166,64 @@ video:fullscreen {
   }
 
 }
+
+
+@media only screen and (max-width: 430px) {
+      
+  
+  /* Add a black background color to the top navigation */
+  .topnav {
+      position: relative;
+      background-color: black;
+      
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 5px 0px;
+      height: 10vh;
+  }
+    
+  
+    
+    
+  /* Centered section inside the top navigation */
+  .topnav-centered  {
+      float: left;
+      position: relative;
+      width: 20%;
+  }
+    
+    /* Right-aligned section inside the top navigation */
+  .topnav-right {
+      float: right;
+      text-align: center;
+      padding-top:3vh;
+
+  }
+  .topnav-centered h2 {
+      float: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(10%, -50%);
+  }
+  #signout{
+      padding-right: 2px;
+  }
+    
+#content {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 86vh;
+  background-color: rgb(49, 49, 49);
+  grid-template-columns: repeat(2, 50%);
+  align-items: center;
+}
+  
+  }
+
+
 /*-------Dropdown button-------------*/
 
 .dropbtn{
@@ -276,18 +334,18 @@ video:fullscreen {
 
 #sendButton{
   background-color: white;
-  padding: 4px 2px;
+  padding: 4px 2px 4px 0px;
   float: right;
-  margin: 5px 0px;
-  margin-right: 2px;
+  margin: 5px;
   border-radius: 1px ;
   font-weight: bold;
+  width: 15%;
   
   
 }
 
 #sendMessage{
-  padding: 3px 6px;
+  padding: 3px 0px 3px 6px;
   margin: 5px 0px 0px 5px;
   outline: none;
   width: 60%;
@@ -298,7 +356,9 @@ video:fullscreen {
 #closeChat{
   background-color: white;
   margin: 0px auto;
-  padding: 5px 102px;
+  /* padding: 5px 102px; */
+  width: 100%;
+  height: 100%;
   font-weight: bold;
 }
 

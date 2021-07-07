@@ -14,7 +14,7 @@ const socket = require("socket.io")
 const app = express();
 
 //Server Port
-var PORT = process.env.PORT || 5000;
+var PORT = process.env.PORT || 3000;
 
 // collect channels
 var channels = {};
@@ -54,6 +54,10 @@ app.get("/join/", function (req, res) {
   res.redirect("/");
 });
 
+
+app.get("/join/:id/msg", function (req, res) {
+  res.sendFile(path.join(__dirname, "public/message.html"));
+});
 
 // join to room
 app.get("/join/:id", function (req, res) {
@@ -177,7 +181,7 @@ io.on("connect", (socket) => {
     let peerConnections = config.peerConnections;
     let name = config.name;
     let msg = config.msg;
-
+    socket.broadcast.emit("msgs", config);
     for (var peer_id in peerConnections) {
       if (sockets[peer_id]) {
         sockets[peer_id].emit("msg", {
@@ -185,8 +189,15 @@ io.on("connect", (socket) => {
           name: name,
           msg: msg,
         });
+
+
+
+
       }
     }
+
+
+
   });
 
   // On peer diconnected
@@ -227,6 +238,13 @@ io.on("connect", (socket) => {
       console.log(socket.id + " emit remove Peer " + id);
     }
   }
+
+  socket.on('message', function (data) {
+    //Sending this chat to all the clients
+    console.log("chat ")
+    socket.broadcast.emit("msgs", data);
+  })
+
 
 });
 

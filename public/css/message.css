@@ -1,0 +1,240 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+  
+  
+/* Add a black background color to the top navigation */
+.topnav {
+    position: relative;
+    background-color: black;
+    overflow: hidden;
+    padding: 2px;
+}
+  
+/* Style the links inside the navigation bar */
+.topnav h2 {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 5px 5px;
+    font-size: 16px;
+}
+  
+  
+/* Centered section inside the top navigation */
+.topnav-centered h2 {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+  
+  /* Right-aligned section inside the top navigation */
+.topnav-right {
+    float: right;
+}
+  
+  
+#mid{
+    text-align: center;
+    background-color: black;
+    color: white;
+    width: 90vw;
+}
+  
+#right{
+    background-color: black;
+    color: white;
+    float: right;
+    display: inline;
+    width: 10vw;
+}
+  
+  
+.navbar h3{
+    text-align: right;
+}
+  
+
+  
+/*-----------------------------*/  
+  
+.msg {
+    
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    
+}
+.msg-header{
+    height: 25px;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+  
+}
+.msgs-content{
+    height: 81.5vh;
+    background-color: grey;
+    overflow: auto;
+    color: white;
+    text-align: center;
+  
+}
+.msg-footer{
+    height: 8vh;
+    background-color: black;
+    align-items: center;
+  
+}
+  
+#sendMsgButton{
+    background-color: white;
+    float: right;
+    margin: 8px 0px;
+    padding: 8px 0px;
+    border-radius: 1px ;
+    font-weight: bold;
+    width: 15%;
+}
+  
+#sendMessage{
+    padding: 8px 6px;
+    margin: 8px 0px 0px 8px;
+    outline: none;
+    width: 70%;
+}
+  
+#joinCall{
+    background-color: white;
+    margin: 0px;
+    font-weight: bold;
+    width: 50%;
+    height: 25px;
+}
+
+#leaveCall{
+    background-color: white;
+    margin: 0px;
+    font-weight: bold;
+    width: 50%;
+    height: 25px;
+}
+
+  
+  
+.message{
+    background-color: rgb(211, 204, 204);
+    width: 70%;
+    padding: 7px;
+    margin: 5px 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    color: black;
+}
+.left{
+    float: left;
+    clear:both;
+    word-break: break-all;
+    word-wrap: wrap;
+    text-align: left;
+    
+}
+  
+.right{
+    float: right;
+    clear:both;
+    background-color: greenyellow;
+    word-break: break-all;
+    word-wrap: wrap;
+    text-align: left;
+}
+
+
+
+
+
+
+
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+.dropdown-content 
+{
+    position: relative;
+    display: none;
+    right: 2px;
+    min-width: 12rem;
+    padding: 1rem;
+    z-index: 1;
+    background-color: #203040;
+    margin-right: 2px;
+    margin-top: 0.4rem;
+    border-radius: 0.5rem;
+    
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+i{
+      color: white;
+}
+#signOut{
+      float: right;
+}
+
+
+@media only screen and (max-width: 430px) {
+      
+  
+/* Add a black background color to the top navigation */
+.topnav {
+    position: relative;
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px 0px;
+}
+  
+
+  
+  
+/* Centered section inside the top navigation */
+.topnav-centered  {
+    float: left;
+    position: relative;
+}
+  
+  /* Right-aligned section inside the top navigation */
+.topnav-right {
+    float: right;
+}
+.topnav-centered h2 {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(10%, -50%);
+}
+#signout{
+    padding-right: 2px;
+}
+
+
+.msgs-content{
+    height: 79vh;
+    background-color: grey;
+    overflow: auto;
+    color: white;
+    text-align: center;
+  
+}
+  
+
+}
