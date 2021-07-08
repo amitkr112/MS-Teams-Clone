@@ -1,4 +1,4 @@
 {
-    "appService.defaultWebAppToDeploy": "/subscriptions/e4fdc82c-3401-4e2b-82c2-101d2be3d856/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/clone-microsoft",
+    "appService.defaultWebAppToDeploy": "",
     "appService.deploySubpath": "."
 }

@@ -17,6 +17,7 @@ let cnt = 0;
 let socket
 let serverPort = 3000;
 let server = getServerUrl();
+localStorage.setItem("cnt", 0);
 
 
 console.log(roomId)
@@ -54,17 +55,19 @@ function getServerUrl() {
 }
 
 joinCall.addEventListener("click", () => {
+
+    let cnt = localStorage.getItem("cnt")
     if (myName.innerText == '') {
         Swal.fire("Sign In First")
     }
 
-    else if (cnt == 1) {
-        Swal.fire("Already Joined")
-
+    else if (localStorage.getItem("cnt") >= 1) {
+        Swal.fire("Already Joined the call!! If not joined,rejoin the room")
     }
     else if (myName.innerText !== '') {
         window.open(`/join/${roomId}`);
         cnt++;
+        localStorage.setItem("cnt", cnt);
     }
     else {
         Swal.fire("Rejoin the room")

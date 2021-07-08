@@ -209,6 +209,10 @@ socket.on("iceCandidate", function (config) {
 socket.on("disconnect", function () {
     console.log("Disconnected from signaling server");
 
+    let prevcnt = localStorage.getItem("cnt");
+    console.log("prevcnt", prevcnt)
+    let newcnt = prevcnt - 1;
+    localStorage.setItem("cnt", newcnt)
     //Removing all peers videos
     for (let peer_id in peerMediaElements) {
         content.removeChild(peerMediaElements[peer_id].parentNode);
@@ -429,6 +433,12 @@ function setVideoStatus(status) {
 /*-------------Leave Button--------------------*/
 leaveButton.addEventListener("click", () => {
     window.location.href = '/';
+
+    let prevcnt = localStorage.getItem("cnt")
+    console.log("prevcnt", prevcnt)
+    let newcnt = prevcnt - 1;
+    localStorage.setItem("cnt", newcnt)
+    console.log("newcnt", newcnt)
 });
 
 /*---------------------------------------------*/

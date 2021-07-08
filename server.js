@@ -25,7 +25,7 @@ var sockets = {};
 // collect peers info grp by channels
 var peers = {};
 
-
+//Starting the server at particular port
 const server = app.listen(PORT, () => {
   console.log("Server started at port " + PORT)
 })
