@@ -4,9 +4,13 @@ Open the below link in any of the browser which supports webTRC and socketio lik
 <!--Link-->
 [https://microsoft-teams-clone.azurewebsites.net/](https://microsoft-teams-clone.azurewebsites.net/)
 
+
+![Screenshot (164)](https://user-images.githubusercontent.com/65765710/125175390-5daa3f00-e1e9-11eb-8ce9-645c420e0902.png)
+
+
 <!---->
 # Features
-* Multiparty - Maximum of 4 persons can join the call
+* Multiparty - Multiple persons can join the call
 * Concept of rooms - Many rooms can operate simultaneously
 * Operate in desktop as well as mobile devices 
 * Direct communication between peers and hence has the low latency
