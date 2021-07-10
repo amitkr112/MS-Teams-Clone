@@ -4,17 +4,22 @@
   background-color: rgb(105, 32, 241);
   
 }
+/* Aligning text to center  */
 h1{
   color: white;
   font-size: 4rem;
   text-align: center;
   margin-top: 10rem;
 }
+
+/* Aligning text to center  */
 h2{
   color:white ;
   text-align: center;
   font-size: 3rem;
 }
+
+/* Newcall link */
 a{
   text-decoration: none;
   font-size: 2rem;
@@ -23,6 +28,8 @@ a{
   border: 0;
   background: white
 }
+
+
 .anchor{
   justify-content: center;
   align-items: center;

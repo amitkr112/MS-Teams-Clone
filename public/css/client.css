@@ -1,8 +1,8 @@
+/* Background settings*/
 *{
   padding: 0px;
   margin: 0px;
 }
-
 
 /* Add a black background color to the top navigation */
 .topnav {
@@ -20,7 +20,6 @@
   font-size: 16px;
 }
 
-
 /* Centered section inside the top navigation */
 .topnav-centered h2 {
   float: none;
@@ -35,44 +34,10 @@
   float: right;
 }
 
-
-#mid{
-  text-align: center;
-  background-color: black;
-  color: white;
-  width: 90vw;
-}
-
-#right{
-  background-color: black;
-  color: white;
-  float: right;
-  display: inline;
-  width: 10vw;
-}
-
-
 .navbar h3{
   text-align: right;
 }
 
-.middle{
-  height: 90vh;
-  /* background-color: rgb(83, 82, 82); */
-}
-
-
-.footer
-{
-  height: 5vh;
-  /* background-color: black; */
-}
-/* 
-#content{
-  height: 95vh;
-  display: flex;
-  flex-direction: row;
-} */
 
 /*-----------------video-------------------*/
 
@@ -154,7 +119,7 @@ video:fullscreen {
   align-items: center;
 }
 
-
+/*------Adding responsiveness to the website-----*/
 @media only screen and (max-width: 720px) {
   .two {
     width: 50vw;
@@ -164,28 +129,23 @@ video:fullscreen {
   .two video{
     display: block;
   }
-
+  
 }
 
-
+/*------Adding responsiveness to the website-----*/
 @media only screen and (max-width: 430px) {
-      
-  
+        
   /* Add a black background color to the top navigation */
   .topnav {
       position: relative;
       background-color: black;
-      
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       padding: 5px 0px;
       height: 10vh;
   }
-    
-  
-    
-    
+      
   /* Centered section inside the top navigation */
   .topnav-centered  {
       float: left;
@@ -193,7 +153,7 @@ video:fullscreen {
       width: 20%;
   }
     
-    /* Right-aligned section inside the top navigation */
+  /* Right-aligned section inside the top navigation */
   .topnav-right {
       float: right;
       text-align: center;
@@ -211,7 +171,7 @@ video:fullscreen {
       padding-right: 2px;
   }
     
-#content {
+  #content {
   display: grid;
   justify-content: center;
   align-content: center;
@@ -219,12 +179,11 @@ video:fullscreen {
   background-color: rgb(49, 49, 49);
   grid-template-columns: repeat(2, 50%);
   align-items: center;
-}
-  
   }
+}
 
 
-/*-------Dropdown button-------------*/
+/*-------Dropup button-------------*/
 
 .dropbtn{
   color: white;
@@ -255,18 +214,16 @@ video:fullscreen {
   bottom: 100%;
   
 }
+
 #moreButton{
   font-size: 1.5rem;
 }
-
 
 .show{
   display: block;
 }
 
 /*----------*/
-
-
 
 #showButton:hover{
   color: green;
@@ -276,8 +233,8 @@ video:fullscreen {
 
 #messageButton:hover{
   color: green;
-
 }
+
 /*----------*/
 
 #copyButton:hover{
@@ -287,6 +244,7 @@ video:fullscreen {
 /*------------------Message---------------*/
 /*In order to make the msg box on front of screen*/
 
+/*-----For fixing the position of messagebox---*/
 :root {
   --msger-top: 50%;
   --msger-left: 50%;
@@ -294,10 +252,7 @@ video:fullscreen {
   --msger-width: 240px;
 }
 
-
-
-.msg {
-  
+.msg {  
   z-index: 10;
   position: absolute;
   /* center screen */
@@ -305,31 +260,30 @@ video:fullscreen {
   left: var(--msger-left);
   transform: translate(-50%, -50%);
   height: var(--msger-height);
-  width: var(--msger-width);
-  
+  width: var(--msger-width);  
   border:2px solid white;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   display: none;
 }
+
 .msg-header{
   height: 25px;
   background-color: black;
-
 }
+
 .msg-content{
   height: 375px;
   background-color: grey;
   overflow: auto;
   color: white;
   text-align: center;
-
 }
+
 .msg-footer{
   height: 36px;
   background-color: black;
-
 }
 
 #sendButton{
@@ -340,17 +294,13 @@ video:fullscreen {
   border-radius: 1px ;
   font-weight: bold;
   width: 15%;
-  
-  
 }
 
 #sendMessage{
   padding: 3px 0px 3px 6px;
   margin: 5px 0px 0px 5px;
   outline: none;
-  width: 60%;
-
-  
+  width: 60%;  
 }
 
 #closeChat{
@@ -362,7 +312,6 @@ video:fullscreen {
   font-weight: bold;
 }
 
-
 .message{
   background-color: rgb(211, 204, 204);
   width: 70%;
@@ -372,15 +321,17 @@ video:fullscreen {
   border-radius: 10px;
   color: black;
 }
+
+/*------Floating peer's message to the left----*/
 .left{
   float: left;
   clear:both;
   word-break: break-all;
   word-wrap: wrap;
   text-align: left;
-  
 }
 
+/*------Floating my message to the right----*/
 .right{
   float: right;
   clear:both;

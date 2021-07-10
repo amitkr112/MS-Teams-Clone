@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <!-- For instructions -->
     <div class="top">
         <h1>
             Steps for operation<br />
@@ -18,7 +19,7 @@
         </h1>
     </div>
 
-
+    <!-- For join room container -->
     <div class=" container">
         <h2>Enter a room id</h2>
         <input class="form-input" type="text" id="roomName" value="" />
@@ -26,18 +27,21 @@
             Join Room
         </button>
     </div>
+
     <script>
+        //Allow to the next page only when the user enters non empty room 
         function join() {
             let room = document.getElementById('roomName').value
             if (room == '') {
                 alert("Enter a non empty roomid")
             }
-            else
-                window.open(`/join/${document.getElementById('roomName').value}/msg`)
+            else {
+                window.location.href = '/join/' + document.getElementById('roomName').value + '/msg'
+            }
         }
     </script>
     <script src="/js/message.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16"></script>
+
 </body>
 
 </html>

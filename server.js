@@ -70,7 +70,6 @@ app.get("/join/:id", function (req, res) {
 
 io.on("connect", (socket) => {
 
-  // console.log("Socket", socket)
   console.log("Connection started", socket.id)
   socket.channels = {};
   sockets[socket.id] = socket;
@@ -93,6 +92,7 @@ io.on("connect", (socket) => {
     //Channel/Room Name
     console.log("channel" + channel)
 
+    // If the socket is already joined
     if (channel in socket.channels) {
       console.log(socket.id + " already joined");
       return;
@@ -116,10 +116,9 @@ io.on("connect", (socket) => {
       peer_name: peer_name,
     };
 
-    console.log("Peers present in all room ids", peers);
-
     // When multiple users join a channel
     for (var id in channels[channel]) {
+
       //This socket will create offer to these ids
       console.log("ID ", id)
       socket.emit("addPeer", {
@@ -139,10 +138,9 @@ io.on("connect", (socket) => {
     }
 
 
-
     channels[channel][socket.id] = socket;
     socket.channels[channel] = channel;
-    console.log("Channels ", socket.channels)
+    // console.log("Channels ", socket.channels)
     // console.log("channels[channel] ", channels[channel])
   });
 
@@ -152,6 +150,7 @@ io.on("connect", (socket) => {
     let peer_id = data.peer_id;
     let ice_candidate = data.ice_candidate;
 
+    //Emmiting ice candidates
     if (peer_id in sockets) {
       console.log("id ", peer_id)
       sockets[peer_id].emit("iceCandidate", {
@@ -168,6 +167,7 @@ io.on("connect", (socket) => {
     let session_description = data.session_description;
 
 
+    //Emitting Session Description 
     if (peer_id in sockets) {
       console.log(peer_id)
       sockets[peer_id].emit("sessionDescription", {
@@ -177,11 +177,20 @@ io.on("connect", (socket) => {
     }
   });
 
+  // Whenever the message comes from the meeting
+  // It will go to other peers in the meeting as 
+  // well as to those who are not in the meeting 
+  // as a post
+
   socket.on("chat", (config) => {
     let peerConnections = config.peerConnections;
     let name = config.name;
     let msg = config.msg;
+
+    //Emitting message to peers outside the meeting
     socket.broadcast.emit("msgs", config);
+
+    //Emitting message to peers in the meeting
     for (var peer_id in peerConnections) {
       if (sockets[peer_id]) {
         sockets[peer_id].emit("msg", {
@@ -189,31 +198,26 @@ io.on("connect", (socket) => {
           name: name,
           msg: msg,
         });
-
-
-
-
       }
     }
-
-
-
   });
 
   // On peer diconnected
   socket.on("disconnect", () => {
-    console.log("Inside disconnect function");
-    console.log(socket.channels)
+    //console.log("Inside disconnect function");
+    //console.log(socket.channels)
+
     //The channel/room in which this id is present
     for (var channel in socket.channels) {
       removePeerFrom(channel);
     }
-    console.log("Disconnected", socket.id)
+    //console.log("Disconnected", socket.id)
     delete sockets[socket.id];
   });
 
   // Remove peers from channel/room
   async function removePeerFrom(channel) {
+
     //Handing warnings
     if (!(channel in socket.channels)) {
       console.log(socket.id + "is not in ", channel);
@@ -224,7 +228,7 @@ io.on("connect", (socket) => {
     delete channels[channel][socket.id];
     delete peers[channel][socket.id];
 
-    //  no channel  peers remove it
+    //  No channel  peers remove it
     if (Object.keys(peers[channel]).length === 0) {
       delete peers[channel];
     }
@@ -239,12 +243,12 @@ io.on("connect", (socket) => {
     }
   }
 
+  //Receiving message in/after the meeting
   socket.on('message', function (data) {
-    //Sending this chat to all the clients
-    console.log("chat ")
+
+    //Sending this chat to all the clients in before/after meeting message page 
+    //console.log("chat ")
     socket.broadcast.emit("msgs", data);
   })
-
-
 });
 

@@ -12,6 +12,7 @@
 
 <body>
 
+  <!-- Navigation Bar -->
   <div class="topnav">
 
     <!-- Centered link -->
@@ -27,33 +28,47 @@
 
   </div>
 
+  <!-- For appending videos -->
   <div id="content">
-
   </div>
+
+
+  <!-- Tempelate for footer -->
   <div id="template">
 
+    <!-- Audio Button -->
     <div class="child">
       <button id="audioButton">
         <i class="fas fa-microphone"></i>
       </button>
     </div>
 
+    <!-- Video Button -->
     <div class="child">
       <button id="videoButton">
         <i class="fas fa-video"></i>
       </button>
     </div>
 
+    <!-- More Button -->
     <div class="child">
       <div class="drop-wrapper">
         <button class="dropbtn child fas fa-ellipsis-h" id="moreButton" onclick="myFunction()"></button>
+
+        <!-- Dropup menu -->
         <div class="drop-menu dropup" id="dropup">
+
+          <!-- Show Participants Button -->
           <div id="child1">
             <button id="showButton"><i class="fas fa-users"></i> Participants</button>
           </div>
+
+          <!-- Message Button -->
           <div id="child1">
             <button id="messageButton"><i class="fas fa-comments"></i> Message</button>
           </div>
+
+          <!-- Copying Meet Link Button -->
           <div id="child1">
             <button id="copyButton"><i class="fas fa-copy"></i> Copy Meet Link</button>
           </div>
@@ -62,6 +77,7 @@
       </div>
     </div>
 
+    <!-- Leave Button -->
     <div class="child">
       <button id="leaveButton">
         Leave
@@ -71,18 +87,26 @@
 
   </div>
 
+  <!-- Message Container -->
   <div class="msg" id="msg">
+
+    <!-- Message Header -->
     <div class="msg-header">
       <button id="closeChat">Close</button>
     </div>
+
+
+    <!-- Appending Messages -->
     <div class="msg-content" id="msg-content">
       <h1>Messages</h1>
-
     </div>
+
+    <!-- Sending Message Input Box and send button -->
     <div class="msg-footer">
       <input type="text" id="sendMessage" placeholder="Enter the msg to send">
       <button id="sendButton">Send</button>
     </div>
+
   </div>
 
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
@@ -90,14 +114,11 @@
   <script src="https://kit.fontawesome.com/d2f1016e6f.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16"></script>
-  <script type="module" src="https://unpkg.com/emoji-picker-element@1"></script>
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://unpkg.com/tippy.js@6"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/client.js"></script>
 
-
-  <!-- end of Js scripts -->
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+/* Basic tempelate designing */
 #template{
     background-color: black;
     align-items: center;
@@ -7,22 +8,30 @@
     padding: 3px;
     height: 2.3rem;
 }
+
+/* Designing all button links */
 i{
     color: azure;
     font-size: 2rem;
 }
+
+/* Designing leavebutton */
 #leaveButton{
     background-color: rgb(245, 21, 32);
     color: white;
     font-size: 1.2rem;
 }
+
+/* Basic design for all buttons */
 button{
     background-color: black;
     outline: none;
     padding: 0;
-border: none;
-background: none
+    border: none;
+    background: none
 }
+
+/* More button extra design */
 .child{
     margin:0px 10px;
 }

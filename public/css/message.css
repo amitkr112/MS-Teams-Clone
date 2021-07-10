@@ -1,9 +1,9 @@
+/* Setting background properties*/
 *{
     padding: 0px;
     margin: 0px;
 }
-  
-  
+    
 /* Add a black background color to the top navigation */
 .topnav {
     position: relative;
@@ -36,30 +36,9 @@
     float: right;
 }
   
-  
-#mid{
-    text-align: center;
-    background-color: black;
-    color: white;
-    width: 90vw;
-}
-  
-#right{
-    background-color: black;
-    color: white;
-    float: right;
-    display: inline;
-    width: 10vw;
-}
-  
-  
-.navbar h3{
-    text-align: right;
-}
-  
 
   
-/*-----------------------------*/  
+/*--------Syling the message container------*/
   
 .msg {
     
@@ -75,6 +54,7 @@
     flex-direction: row;
   
 }
+/*-----Styling section where message is appended----*/
 .msgs-content{
     height: 81.5vh;
     background-color: grey;
@@ -83,6 +63,7 @@
     text-align: center;
   
 }
+
 .msg-footer{
     height: 8vh;
     background-color: black;
@@ -134,6 +115,8 @@
     border-radius: 10px;
     color: black;
 }
+
+/*-----Pushing message from peers to the left----*/
 .left{
     float: left;
     clear:both;
@@ -142,7 +125,8 @@
     text-align: left;
     
 }
-  
+
+/*-----Pushing my message to the right----*/
 .right{
     float: right;
     clear:both;
@@ -152,12 +136,7 @@
     text-align: left;
 }
 
-
-
-
-
-
-
+/*----Setting the position and styling the signout button----*/
 .dropdown {
     display: inline-block;
     position: relative;
@@ -183,14 +162,16 @@
 i{
       color: white;
 }
+
 #signOut{
       float: right;
 }
 
 
+/*----For making the page responsive--------*/
+
 @media only screen and (max-width: 430px) {
-      
-  
+        
 /* Add a black background color to the top navigation */
 .topnav {
     position: relative;
@@ -202,19 +183,17 @@ i{
     padding: 5px 0px;
 }
   
-
-  
-  
 /* Centered section inside the top navigation */
 .topnav-centered  {
     float: left;
     position: relative;
 }
   
-  /* Right-aligned section inside the top navigation */
+/* Right-aligned section inside the top navigation */
 .topnav-right {
     float: right;
 }
+
 .topnav-centered h2 {
     float: none;
     position: absolute;
@@ -222,10 +201,10 @@ i{
     left: 50%;
     transform: translate(10%, -50%);
 }
+
 #signout{
     padding-right: 2px;
 }
-
 
 .msgs-content{
     height: 79vh;
@@ -234,7 +213,5 @@ i{
     color: white;
     text-align: center;
   
-}
-  
-
+}  
 }

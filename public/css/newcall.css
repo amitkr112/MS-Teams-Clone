@@ -1,22 +1,33 @@
+/* Newcall page settings */
+
+/* Background settings */
 *{
   background-color: rgb(105, 32, 241);
   z-index: -1;
 }
+
+/* Designing instructions sections */
+
 .top{
   margin-top: 10rem;
 }
+
 h1{
   text-align: center;
   color: white;
   font-size: 2.5rem;
 
 }
+
 h2{
   background-color: grey;
   text-align: center;
   font-size: 1.5rem;
 }
 
+/*-----------------------------------*/
+
+/*---Designing join room container---*/
 .container{
   margin: 0px auto;
   background-color: grey;
@@ -39,3 +50,4 @@ button{
   margin: 5px;
 }
 
+/*-----------------------------------*/
