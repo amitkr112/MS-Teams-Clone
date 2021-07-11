@@ -19,6 +19,8 @@ let myName = document.getElementById("myName")
 let myEmail
 let name
 
+// Checking whether the device is mobile or not
+// In order to implement tippy features
 let isMobileDevice = DetectRTC.isMobileDevice
 
 
@@ -58,6 +60,7 @@ socket.on("addPeer", function (config) {
     let peer_id = config.peer_id;
     peers = config.peers
 
+    // If already joined to the channel do nothing
     if (peer_id in peerConnections) {
         console.log("Already connected to peer", peer_id);
         return;
@@ -70,7 +73,7 @@ socket.on("addPeer", function (config) {
     // Adding the peer to the peerconnections
     peerConnections[peer_id] = peerConnection;
 
-
+    // Relaying ice to the peers
     peerConnections[peer_id].onicecandidate = function (event) {
         if (event.candidate) {
             socket.emit("relayICE", {
@@ -115,12 +118,14 @@ socket.on("addPeer", function (config) {
         }
     };
 
+    // Adding audio and tracks 
     localMediaStream.getTracks().forEach(function (track) {
         peerConnections[peer_id].addTrack(track, localMediaStream);
     });
 
     console.log("Config should ", config)
 
+    //Creating sdp offers
     if (config.should_create_offer) {
         console.log("Creating RTC offer to", peer_id);
         console.log(peerConnections)
@@ -146,6 +151,7 @@ socket.on("addPeer", function (config) {
     }
 });
 
+// On receiving the message
 socket.on("msg", function (data) {
     console.log("reveived values", data)
     // Appending the message to the left side in content section
@@ -153,6 +159,7 @@ socket.on("msg", function (data) {
 
 })
 
+// On  receiving the session description
 socket.on("sessionDescription", function (config) {
     console.log("Remote Session-description", config);
 
@@ -194,6 +201,7 @@ socket.on("sessionDescription", function (config) {
         });
 });
 
+// On receiving ice candidates
 socket.on("iceCandidate", function (config) {
     console.log("Inside ice candidate")
     let peer_id = config.peer_id;
@@ -205,7 +213,7 @@ socket.on("iceCandidate", function (config) {
         });
 });
 
-
+// On receiving the disconnect call 
 socket.on("disconnect", function () {
     console.log("Disconnected from signaling server");
 
@@ -229,6 +237,7 @@ socket.on("disconnect", function () {
     peerMediaElements = {};
 });
 
+// Removing the user from its peers connections 
 socket.on("removePeer", function (config) {
     console.log("Signaling server said to remove peer:", config);
 
@@ -348,7 +357,6 @@ function setButtonsTitle() {
     // Hence not need for mobile
     if (isMobileDevice) return;
 
-
     tippy(audioButton, {
         content: "Turn Off Audio",
         placement: "top",
@@ -367,12 +375,7 @@ function setButtonsTitle() {
         content: "More actions",
         placement: "top"
     })
-
-
-
 }
-
-
 
 /*--------- Audio Button---------------- */
 
@@ -388,7 +391,6 @@ audioButton.addEventListener("click", (e) => {
 });
 
 
-
 function setAudioStatus(status) {
     //Onhover will not work in mobile devices
     if (!isMobileDevice) {
@@ -400,9 +402,6 @@ function setAudioStatus(status) {
 }
 
 /*---------------------------------------------*/
-
-
-
 
 /*----------------Video Button -------------------*/
 
@@ -428,12 +427,12 @@ function setVideoStatus(status) {
 
 /*---------------------------------------------*/
 
-
-
 /*-------------Leave Button--------------------*/
 leaveButton.addEventListener("click", () => {
+    // Direct the user to homepage
     window.location.href = '/';
 
+    // Just decrementing the count so that the user may rejoin from the chat page 
     let prevcnt = localStorage.getItem("cnt")
     console.log("prevcnt", prevcnt)
     let newcnt = prevcnt - 1;
@@ -442,7 +441,6 @@ leaveButton.addEventListener("click", () => {
 });
 
 /*---------------------------------------------*/
-
 
 /*-------------Showing Participants------------*/
 
@@ -462,6 +460,7 @@ showButton.addEventListener("click", () => {
         console.log(name)
     }
 
+    //Only 1 user
     if (arr.length == 1) {
         swal.fire({
             html: `<table border=1 style="margin:auto;">
@@ -482,6 +481,7 @@ showButton.addEventListener("click", () => {
         })
 
     }
+    // 2 users
     else if (arr.length == 2) {
         swal.fire({
             html: `<table style="margin:auto;" border=1>
@@ -508,6 +508,7 @@ showButton.addEventListener("click", () => {
 
 
     }
+    //3 users
     else if (arr.length == 3) {
         swal.fire({
             html: `<table style="margin:auto;" border=1>
@@ -539,6 +540,7 @@ showButton.addEventListener("click", () => {
 
 
     }
+    // 4 users
     else {
         swal.fire(
             {
@@ -582,10 +584,10 @@ showButton.addEventListener("click", () => {
 
 /*---------------------------------------------*/
 
-
 /*--------------Copy Class Link----------------*/
 copyButton.addEventListener("click", () => {
     var inputc = document.body.appendChild(document.createElement("input"));
+    // Copying the url
     inputc.value = window.location.href + "/msg";
     inputc.focus();
     inputc.select();
@@ -594,7 +596,6 @@ copyButton.addEventListener("click", () => {
     Swal.fire("URL Copied.");
 })
 /*---------------------------------------------*/
-
 
 /*------------Messaging Functioanlity---------*/
 
@@ -609,8 +610,9 @@ closeChat.addEventListener("click", () => {
 
 
 messageButton.addEventListener("click", () => {
-    console.log("message btn clicked")
-    console.log(msg.style.display)
+    //console.log("message btn clicked")
+    //console.log(msg.style.display)
+    // If the message box is not visible make it visible 
     if (!msg.style.display || msg.style.display == "none") {
         msg.style.display = "block"
     }
@@ -624,7 +626,6 @@ sendButton.addEventListener("click", () => {
         // console.log(peerConnections)
         console.log(roomId)
         // console.log(name)
-        // msgContent.innerHTML += '<p><strong>' + name + ':</strong>' + sendMessage.value + '</p>'
         append(`You:${sendMessage.value}`, 'right')
         socket.emit("chat", {
             peerConnections: peerConnections,
@@ -646,24 +647,6 @@ function append(message, position) {
     msgContent.append(messagelement);
 }
 
-
-/*-----------------------------------------*/
-
-// emailButton.addEventListener("click", () => {
-
-//     console.log("Email clikced")
-//     let message = {
-//         email: "",
-//         subject: "Please join the call",
-//         body: "Click to join: ",
-//     };
-//     shareRoomByEmail(message);
-
-// })
-
-
-
-
 /*---------Getting the name of person-------*/
 
 console.log("myname is ", localStorage.getItem("myName"));
@@ -672,9 +655,6 @@ myName.innerText = localStorage.getItem("myName")
 myEmail = localStorage.getItem("myEmail")
 name = myName.innerText
 /*------------------------------------------*/
-
-
-
 
 /*--------------Creating Dropup-------------*/
 
